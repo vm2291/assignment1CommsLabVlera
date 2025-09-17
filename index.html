@@ -15,25 +15,22 @@
 <body>
 
 <!-- header section starts -->
-
 <header id="header">
-
-<nav>
-    <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#special">Inspiration</a></li>
-        <li><a href="#about"> Movie</a></li>
-        <li><a href="#hidden-details">Details</a></li>
-        <li><a href="#contact">Contact</a></li>
-    </ul>
-</nav>
-
-<div class="fas fa-hamburger"></div>
-
-<a href="#" class="logo"><img src="images/logo.png" alt=""></a>
-
+    <!-- Navigation bar with links to page sections -->
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#special">Inspiration</a></li>
+            <li><a href="#about"> Movie</a></li>
+            <li><a href="#hidden-details">Details</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <!-- Hamburger icon for mobile navigation -->
+    <div class="fas fa-hamburger"></div>
+    <!-- Logo -->
+    <a href="#" class="logo"><img src="images/logo.png" alt=""></a>
 </header>
-
 <!-- header section ends -->
 
 
@@ -49,17 +46,19 @@
         <a href="#about"><button>Watch Movie</button></a>
     </div>
 
-<div class="video-container">
-    <video src="media/vid1l.mp4" autoplay loop playsinline class="vid vid1" style="display:block;"></video>
-    <video src="media/vid2l.mp4" autoplay loop playsinline class="vid vid2"></video>
-    <video src="media/vid3l.mp4" autoplay loop playsinline class="vid vid3"></video>
-</div>
+    <!-- Video background slider (controlled by JS) -->
+    <div class="video-container">
+        <video src="media/vid1l.mp4" autoplay loop playsinline class="vid vid1" style="display:block;"></video>
+        <video src="media/vid2l.mp4" autoplay loop playsinline class="vid vid2"></video>
+        <video src="media/vid3l.mp4" autoplay loop playsinline class="vid vid3"></video>
+    </div>
 
-<div class="controls">
-    <div class="dots dot1"></div>
-    <div class="dots dot2"></div>
-    <div class="dots dot3"></div>
-</div>
+    <!-- Custom dot controls for video slider -->
+    <div class="controls">
+        <div class="dots dot1"></div>
+        <div class="dots dot2"></div>
+        <div class="dots dot3"></div>
+    </div>
 
 </div>
 
@@ -83,21 +82,18 @@
 
     <div class="card">
         <video src="media/vid1.mp4" controls>
-          Your browser does not support the video tag.
         </video>
         <p>Two birds meet, chirping and sharing a moment. Their small interactions bring life to the grass and remind us to notice the simple joys around us.</p>
     </div>
 
     <div class="card">
         <video src="media/vid2.mp4" controls>
-          Your browser does not support the video tag.
         </video>
         <p>A close look at the tree reveals patterns like living art. Every twist and texture tells a story of time, growth, and hidden beauty.</p>
     </div>
 
     <div class="card">
         <video src="media/vid3.mp4" controls>
-          Your browser does not support the video tag.
         </video>
         <p>A gentle dog, fur and breath moving softly in the sun. In these quiet moments, we see warmth, comfort, and the peace of being present.</p>
     </div>
@@ -136,6 +132,7 @@
     <h1>Hidden <span>Details</span></h1>
     <p>Hover or tap to reveal the true colors and details hidden. Use The Arrows To Explore More Images.</p>
   </div>
+  <!-- Horizontal slider for magnifier images (JS controlled) -->
   <div class="d-flex justify-content-center align-items-center" style="min-height:400px;">
     <button class="mag-slider-arrow mag-slider-left me-3" aria-label="Previous">&#8592;</button>
     <div class="magnifier-slider-horizontal" style="position:relative;">

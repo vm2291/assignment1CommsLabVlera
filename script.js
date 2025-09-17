@@ -1,35 +1,28 @@
 $(document).ready(function(){
+    // --- NAVIGATION LOGIC ---
+    // Hamburger menu toggle for mobile navigation
     $('.fa-hamburger').click(function(){
         $('nav').toggleClass('nav-toggle');
     });
 
+    // Close navigation on link click (for mobile UX)
     $('nav ul li a').click(function(){
         $('nav').removeClass('nav-toggle');
     });
 
-    $('.dot1').click(function(){
-        $('.vid3').css('display','none');
-    });
-
-    $('.dot2').click(function(){
-        $('.vid3').css('display','none');
-    });
-
-    $('.dot3').click(function(){
-        $('.vid2').css('display','none');
-    });
-
-    $(window).on('scroll load',function(){
-        // ...existing code...
-    });
-
-    // --- Magnifier logic for multiple areas ---
+    // --- MAGNIFIER LOGIC FOR MULTIPLE AREAS ---
+    /**
+     * Sets up a magnifier effect for a given magnifier area.
+     * @param {jQuery} $magArea - The magnifier area container.
+     */
     function setupMagnifier($magArea) {
         const $glass = $magArea.find('.magnifier-glass');
         const $clear = $magArea.find('.mag-clear');
         const glassW = $glass.width();
         const glassH = $glass.height();
-        const zoom = 1.15; // subtle zoom
+        const zoom = 1.15; // Subtle zoom for effect
+
+        // Handles moving the magnifier glass and revealing the clear image
         function moveMagnifier(e) {
             let rect = $magArea[0].getBoundingClientRect();
             let x, y;
@@ -40,17 +33,18 @@ $(document).ready(function(){
                 x = e.clientX - rect.left;
                 y = e.clientY - rect.top;
             }
-            // Clamp
+            // Clamp glass position within area
             x = Math.max(glassW/2, Math.min(rect.width - glassW/2, x));
             y = Math.max(glassH/2, Math.min(rect.height - glassH/2, y));
-            // Move glass
+            // Move glass and reveal clear image
             $glass.css({left: x-glassW/2, top: y-glassH/2, display:'block'}).addClass('active');
-            // Reveal clear image with clip-path and subtle zoom
             $clear.css({
                 'clip-path': `circle(${glassW/2}px at ${x}px ${y}px)`,
                 'transform': `scale(${zoom}) translate(${-x*(zoom-1)}px, ${-y*(zoom-1)}px)`
             });
         }
+
+        // Event handlers for mouse/touch interaction
         $magArea.on('mousemove touchmove', function(e){
             moveMagnifier(e);
             e.preventDefault();
@@ -63,19 +57,28 @@ $(document).ready(function(){
             $glass.show().addClass('active');
         });
     }
+
+    // Initialize magnifier for all relevant areas
     $('.magnifier-area').each(function(){
         setupMagnifier($(this));
     });
 
-    // --- Horizontal slider logic for magnifier slides ---
+    // --- MAGNIFIER SLIDER LOGIC (Horizontal) ---
     let currentSlideH = 0;
     const $slidesH = $('.magnifier-area-wrapper-horizontal');
+
+    /**
+     * Shows the horizontal magnifier slide at the given index.
+     * @param {number} idx - Index of the slide to show.
+     */
     function showSlideH(idx) {
         $slidesH.each(function(i){
             $(this).toggleClass('d-none', i !== idx);
         });
     }
     showSlideH(currentSlideH);
+
+    // Arrow navigation for magnifier slider
     $('.mag-slider-left').click(function(){
         currentSlideH = (currentSlideH - 1 + $slidesH.length) % $slidesH.length;
         showSlideH(currentSlideH);
@@ -90,6 +93,10 @@ $(document).ready(function(){
     const $dots = $('.controls .dots');
     let currentVid = 0;
 
+    /**
+     * Shows the video at the given index and updates dot indicators.
+     * @param {number} idx - Index of the video to show.
+     */
     function showVideo(idx) {
         $videos.each(function(i){
             if(i === idx) {
@@ -108,14 +115,14 @@ $(document).ready(function(){
         currentVid = idx;
     }
 
-    // On dot click
+    // Dot click navigation for hero video slider
     $dots.each(function(i){
         $(this).off('click').on('click', function(){
             showVideo(i);
         });
     });
 
-    // On video end, go to next
+    // Automatically advance to next video when current ends
     $videos.each(function(i){
         this.onended = function(){
             let next = (i+1)%$videos.length;
@@ -123,20 +130,19 @@ $(document).ready(function(){
         };
     });
 
-    // Style for active dot
+    // Add style for active dot (for clarity)
     $('<style>\n.controls .dots.active{box-shadow:0 0 0 3px #fff,0 0 0 6px var(--accent);border:2px solid #fff;}\n</style>').appendTo('head');
 
-    // On page load, show first video and force play muted (for autoplay)
+    // On page load, show first video and force play muted (for autoplay compatibility)
     showVideo(0);
     $videos[0].muted = true;
     $videos[0].play().catch(()=>{});
-    // Try to force play in case browser blocks autoplay
     setTimeout(function(){
         $videos[0].muted = true;
         $videos[0].play().catch(()=>{});
     }, 200);
 
-    // Unmute and play only the first video on first user interaction
+    // Unmute and play only the first video on first user interaction (for browsers that block autoplay with sound)
     let unmuted = false;
     $(document).one('click keydown touchstart wheel', function() {
         $videos[0].muted = false;
@@ -144,7 +150,11 @@ $(document).ready(function(){
         unmuted = true;
     });
 
-    // Pause hero video when #home is not in viewport
+    // --- HERO VIDEO AUTOPAUSE LOGIC ---
+    /**
+     * Checks if the #home section is in the viewport.
+     * @returns {boolean} True if #home is visible.
+     */
     function isHomeInView() {
         const home = document.getElementById('home');
         if (!home) return false;
@@ -154,6 +164,10 @@ $(document).ready(function(){
             rect.top < (window.innerHeight || document.documentElement.clientHeight)
         );
     }
+
+    /**
+     * Pauses hero videos when #home is not visible, resumes current video if visible.
+     */
     function checkHeroVideoPause() {
         if (!isHomeInView()) {
             $videos.each(function(i){ this.pause(); });
